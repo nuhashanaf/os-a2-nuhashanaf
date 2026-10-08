@@ -43,5 +43,6 @@ entry("sbrk");
 entry("pause");
 entry("trace");
 entry("sysinfo");
+entry("getprocs");
 entry("uptime");
 entry("sync");

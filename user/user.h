@@ -43,6 +43,8 @@ char *sbrk(int);
 char *sbrklazy(int);
 struct sysinfo;
 int sysinfo(struct sysinfo *);
+struct uproc;
+int getprocs(struct uproc *, int);
 
 // printf.c
 void fprintf(int, const char *, ...) __attribute__((format(printf, 2, 3)));
