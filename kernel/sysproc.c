@@ -153,3 +153,15 @@ sys_getprocs(void)
 
   return getprocs(addr, max);
 }
+
+uint64
+sys_getpinfo(void)
+{
+  uint64 addr;
+  int max;
+
+  argaddr(0, &addr);
+  argint(1, &max);
+
+  return getpinfo(addr, max);
+}

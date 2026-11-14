@@ -154,7 +154,9 @@ UPROGS=\
 	$U/_sync\
 	$U/_sleep\
 	$U/_trace\
-	$U/_ps
+	$U/_ps\
+    $U/_pinfocheck\
+    $U/_cputest
 
 fs.img: mkfs/mkfs README $(UPROGS)
 	mkfs/mkfs fs.img README $(UPROGS)

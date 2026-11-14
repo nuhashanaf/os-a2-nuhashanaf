@@ -107,6 +107,9 @@ int             either_copyin(void *dst, int user_src, uint64 src, uint64 len);
 void            procdump(void);
 uint64          nproc(void);
 int             getprocs(uint64, int);
+int             getpinfo(uint64, int);
+int             mlfq_tick(struct proc *);
+void            mlfq_boost(void);
 
 // swtch.S
 void            swtch(struct context*, struct context*);

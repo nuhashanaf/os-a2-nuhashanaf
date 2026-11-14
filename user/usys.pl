@@ -44,5 +44,6 @@ entry("pause");
 entry("trace");
 entry("sysinfo");
 entry("getprocs");
+entry("getpinfo");
 entry("uptime");
 entry("sync");
