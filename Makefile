@@ -157,7 +157,8 @@ UPROGS=\
 	$U/_ps\
     $U/_pinfocheck\
     $U/_cputest\
-    $U/_boosttest
+    $U/_boosttest\
+    $U/_fairtest
 
 fs.img: mkfs/mkfs README $(UPROGS)
 	mkfs/mkfs fs.img README $(UPROGS)
