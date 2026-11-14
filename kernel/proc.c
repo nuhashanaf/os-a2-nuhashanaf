@@ -492,7 +492,8 @@ scheduler(void)
 {
   struct cpu *c = mycpu();
   struct proc *p;
-  int chosen, level, i, start;
+  struct proc *chosen;
+  int level, i, start;
 
   c->proc = 0;
 
@@ -500,23 +501,20 @@ scheduler(void)
     intr_on();
     intr_off();
 
-    chosen = -1;
-
+    chosen = 0;
     acquire(&mlfq_lock);
 
-    for (level = 0; level < 4 && chosen < 0; level++) {
+    for (level = 0; level < 4 && chosen == 0; level++) {
       start = mlfq_cursor[level];
 
       for (i = 1; i <= NPROC; i++) {
         int idx = (start + i) % NPROC;
         p = &proc[idx];
-
         acquire(&p->lock);
 
         if (p->state == RUNNABLE && p->level == level) {
-          chosen = idx;
+          chosen = p;
           mlfq_cursor[level] = idx;
-          release(&p->lock);
           break;
         }
 
@@ -526,22 +524,16 @@ scheduler(void)
 
     release(&mlfq_lock);
 
-    if (chosen >= 0) {
-      p = &proc[chosen];
+    if (chosen != 0) {
+      p = chosen;
+      p->state = RUNNING;
+      p->nsched++;
+      c->proc = p;
 
-      acquire(&p->lock);
+      swtch(&c->context, &p->context);
 
-      if (p->state == RUNNABLE) {
-        p->state = RUNNING;
-        p->nsched++;
-        c->proc = p;
-
-        swtch(&c->context, &p->context);
-
-        mycpu()->intena = 0;
-        c->proc = 0;
-      }
-
+      mycpu()->intena = 0;
+      c->proc = 0;
       release(&p->lock);
     } else {
       asm volatile("wfi");
